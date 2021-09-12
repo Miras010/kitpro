@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     </head>
     <body>
-    <h1>HEE</h1>
+        <h1>NewUPD</h1>
         <header class="header">
             <div class="container header-sec">
                 <img src="{{ asset('img/logo.jpg') }}" alt="logo" class="logo">
