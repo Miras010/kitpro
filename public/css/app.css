@@ -49,7 +49,11 @@ body  {
     font-family: 'Playfair Display', serif;
     justify-content: center;
 }
-
+.main-word {
+    font-size:50px;
+    color: white;
+    margin-bottom: 50px;
+}
 .header {
     width: 100%;
     background-color: black;
@@ -67,11 +71,10 @@ body  {
 .logo {
     width: 100px;
 }
-.navbar {
+.nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100px;
     max-width: 600px;
     width: 100%;
 }
@@ -86,6 +89,33 @@ body  {
 }
 .navlink a:hover{
     color: #ffba64;
+}
+.header-social .fa{
+    font-size: 30px;
+    color: #d0d0d0;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.header-social .fa-facebook:hover{
+    color: #2b55ff;
+}
+.header-social .fa-facebook:focus{
+    color: #2b55ff;
+}
+.header-social .fa-instagram:hover{
+    color:red;
+}
+.header-social .fa-instagram:focus{
+    color:red;
+}
+.header-social .fa-twitter:hover{
+    color: #00aced;
+}
+.header-social .fa-twitter:focus{
+    color:#00aced;
 }
 main {
     width: 100%;
@@ -108,7 +138,7 @@ main {
     position: relative;
 }
 .img-shadow {
-    background-image: linear-gradient(to right, black 0%, transparent 90%), url("/img/main-img.jpg");
+    background-image: linear-gradient(to right, #0B0C10 0%, transparent 90%), url("/img/main-img.jpg");
     position: absolute;
     right: 300px;
     height: 570px;
@@ -135,6 +165,216 @@ main {
     background-color: #ffba64;
     color: #1a202c;
     border: 2px solid #ffba64;
+}
+.button {
+    background-color: black;
+    text-transform: uppercase;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 20px;
+    color: white;
+    border: 2px solid white;
+    transition: 0.3s;
+}
+.button:hover {
+    background-color: #ffba64;
+    color: #1a202c;
+    border: 2px solid #ffba64;
+}
+
+:root {
+    --card-height: 40vw;
+    --card-margin: 4vw;
+    --card-top-offset: 1em;
+    --numcards: 4;
+    --outline-width: 0px;
+}
+
+#cards {
+    padding-bottom: calc(var(--numcards) * var(--card-top-offset)); /* Make place at bottom, as items will slide to that position*/
+    margin-bottom: var(--card-margin); /* Don't include the --card-margin in padding, as that will affect the scroll-timeline*/
+}
+
+#card_1 {
+    --index: 1;
+}
+
+#card_2 {
+    --index: 2;
+}
+
+#card_3 {
+    --index: 3;
+}
+
+#card_4 {
+    --index: 4;
+}
+
+.card {
+    position: sticky;
+    top: 0;
+    padding-top: calc(var(--index) * var(--card-top-offset));
+}
+
+@supports (animation-timeline: works) {
+
+    @scroll-timeline cards-element-scrolls-in-body {
+        source: selector(body);
+        scroll-offsets:
+            /* Start when the start edge touches the top of the scrollport */
+            selector(#cards) start 1,
+                /* End when the start edge touches the start of the scrollport */
+            selector(#cards) start 0
+    ;
+        start: selector(#cards) start 1; /* Start when the start edge touches the top of the scrollport */
+        end: selector(#cards) start 0; /* End when the start edge touches the start of the scrollport */
+        time-range: 4s;
+    }
+
+    .card {
+        --index0: calc(var(--index) - 1); /* 0-based index */
+        --reverse-index: calc(var(--numcards) - var(--index0)); /* reverse index */
+        --reverse-index0: calc(var(--reverse-index) - 1); /* 0-based reverse index */
+    }
+
+    .card__content {
+        transform-origin: 50% 0%;
+        will-change: transform;
+
+        --duration: calc(var(--reverse-index0) * 1s);
+        --delay: calc(var(--index0) * 1s);
+
+        animation: var(--duration) linear scale var(--delay) forwards;
+        animation-timeline: cards-element-scrolls-in-body;
+    }
+
+    @keyframes scale {
+        to {
+            transform:
+                scale(calc(
+                    1.1
+                    -
+                    calc(0.1 * var(--reverse-index))
+                ));
+        }
+    }
+}
+
+/** DEBUG **/
+
+#debug {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+}
+#debug::after {
+    content: " Show Debug";
+    margin-left: 1.5em;
+    color: white;
+    white-space: nowrap;
+}
+
+#debug:checked ~ main {
+    --outline-width: 1px;
+}
+
+
+/** PAGE STYLING **/
+.card-sec {
+    background-color: #0B0C10;
+    padding: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    margin-bottom: -100px;
+}
+.card-sec h2 {
+    margin-bottom: 50px;
+}
+#cards {
+    width: 80%;
+    list-style: none;
+    outline: calc(var(--outline-width) * 10) solid blue;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(var(--numcards), var(--card-height));
+    gap: var(--card-margin);
+}
+
+.card {
+    outline: var(--outline-width) solid hotpink;
+}
+
+.card__content {
+    box-shadow: 0 0.2em 1em rgba(0, 0, 0, 0.1), 0 1em 2em rgba(0, 0, 0, 0.1);
+    background: rgb(255, 255, 255);
+    color: rgb(10, 5, 7);
+    border-radius: 1em;
+    overflow: hidden;
+    display: grid;
+    grid-template-areas: "text img";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    min-height: 550px;
+    align-items: stretch;
+    outline: var(--outline-width) solid lime;
+}
+
+.card__content > div {
+    grid-area: text;
+    width: 80%;
+    place-self: center;
+    text-align: left;
+
+    display: grid;
+    gap: 1em;
+    place-items: start;
+}
+
+.card__content > figure {
+    grid-area: img;
+    overflow: hidden;
+}
+
+.card__content > figure > img {
+    width: 100%;
+    max-height: 570px;
+    object-fit: cover;
+}
+
+h1 {
+    font-weight: 300;
+    font-size: 3.5em;
+}
+
+h2 {
+    font-weight: 300;
+    font-size: 2.5em;
+}
+
+p {
+    font-family: sans-serif;
+    font-weight: 300;
+    line-height: 1.42;
+}
+.btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #ffba64;
+    color: #1a202c;
+    border: 2px solid #ffba64;
+
+    transition: 0.3s;
+}
+.btn:hover {
+
+    background-color: black;
+    color: white;
+    border: 2px solid white;
 }
 
 .otziv {
@@ -227,7 +467,7 @@ main {
     width: 100%;
 }
 .overlay {
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.7);
     position: absolute;
     top:0;
     left:0;
@@ -251,6 +491,11 @@ main {
     max-width: 800px;
     text-align: center;
     margin-top: 30px;
+    font-size: 18px;
+}
+.overlay p span {
+    color: #ffba64;
+    font-size: 1.1em;
 }
 @media (max-width: 767px) {
     .fullscreen-bg {
@@ -260,24 +505,260 @@ main {
         display: none;
     }
 }
-
-.footer {
-    background-color: #343434;
+.mid {
+    margin-top: 50px;
+    width: 100%;
+    max-width: 1000px;
+}
+#counter {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bl {
+    margin-right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     color: white;
+    font-family: 'Bebas Neue', cursive;
 }
-.footer-sec {
+.bl:last-child {
+    margin-right: -30px;
+}
+.number {
+    font-size: 80px;
+    font-weight: bold;
+    color: #ffba64;
+}
+.text {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+/** CARD PRODUCTS **/
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+@media (max-width: 767px) {
+    .cards {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .card:last-child {
+    }
+}
+.card {
+    background: none;
+    position: relative;
+    width: 300px;
+    height: 400px;
+    transform-style: preserve-3d;
+}
+.card .face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 300px;
+    backface-visibility: hidden;
+    transition: 0.4s ease-in-out;
+    transform: perspective(500px) rotateY(0deg);
 }
-.footer-logo {
+.card .face.front {
+    background-image: url("/img/main-img.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.card:nth-child(2) .face.front{
+    background-image: url("/img/kitchen.jpg");
+}
+.card:nth-child(3) .face.front{
+    background-image: url("/img/spal.jpg");
+}
+.card:nth-child(4) .face.front{
+    background-image: url("/img/dets.jpg");
+}
+.card:hover .face.front{
+    transform: perspective(500px) rotateY(180deg);
+}
+.card .face.back {
+    background: white;
+    color: #000;
+    transform: perspective(500px) rotateY(180deg);
+    text-align: center;
+}
+.card:hover .face.back {
+    transform: perspective(500px) rotateY(360deg);
+}
+.card  .face h2 {
+    font-size: 2em;
+    text-transform: uppercase;
+    transform: perspective(500px) translateZ(30px);
+}
+
+#myFooter{
+    padding-top:32px;
+    background-color: #eeeeee;
+}
+#myFooter .container{
+    text-align: center;
+}
+#myFooter .footer-copyright{
+    margin-bottom: 35px;
+    text-align: center;
+    color: #777;
+}
+#myFooter ul{
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 18px;
+}
+#myFooter a{
+    color: #282b2d;
+    font-size: 18px;
+}
+#myFooter li{
+    display: inline-block;
+    margin: 0px 15px;
+    line-height: 2;
+}
+#myFooter .footer-social{
+    text-align: center;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background-color: #eee;
+}
+#myFooter .fa{
+    font-size: 36px;
+    margin-right: 15px;
+    margin-left: 20px;
+    background-color: white;
+    color: #d0d0d0;
+    border-radius: 51%;
+    padding: 10px;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    line-height: 43px;
+    text-decoration: none;
+    transition:color 0.2s;
+}
+#myFooter .fa-facebook:hover{
+    color: #2b55ff;
+}
+#myFooter .fa-facebook:focus{
+    color: #2b55ff;
+}
+#myFooter .fa-instagram:hover{
+    color:red;
+}
+#myFooter .fa-instagram:focus{
+    color:red;
+}
+#myFooter .fa-twitter:hover{
+    color: #00aced;
+
+}
+#myFooter .fa-twitter:focus{
+    color:#00aced;
+}
+#myFooter{
+    flex: 0 0 auto;
+    -webkit-flex: 0 0 auto;
+}
+
+
+/** CONTACT FORM **/
+.feedback {
+    width: 100%;
+    padding-top: 100px;
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
-.footer-social img {
-    width: 49px;
+.feedback h3{
+    color: #ffba64;
+    font-size: 25px;
+    margin-bottom: 30px;
 }
+input {
+    outline: none;
+    border: none;
+}
+
+textarea {
+    outline: none;
+    border: none;
+}
+
+textarea:focus, input:focus {
+    border-color: transparent !important;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ Contact ]*/
+
+.wrap-contact100 {
+    width: 500px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 62px 55px 65px 55px;
+}
+.wrap-contact100 form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+/*------------------------------------------------------------------
+[ Input ]*/
+
+.wrap-input100 {
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    margin-bottom: 17px;
+}
+
+.input100 {
+    display: block;
+    width: 100%;
+    background: transparent;
+    font-size: 15px;
+    color: #1b3815;
+    line-height: 1.2;
+}
+/*---------------------------------------------*/
+input.input100 {
+    height: 62px;
+    padding: 0 20px 0 23px;
+}
+
+
+textarea.input100 {
+    min-height: 199px;
+    padding: 19px 20px 0 23px;
+}
+
+

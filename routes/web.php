@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
+
+
+Route::get('/contact', function () {
+    return view('form_contact');
+});
+
+Route::post('/contact/done','App\Http\Controllers\SiteController@submit')->name("form");
+Route::post('/contact/done/done','App\Http\Controllers\SiteController@submit')->name("form");
